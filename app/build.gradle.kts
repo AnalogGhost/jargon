@@ -21,8 +21,8 @@ android {
         applicationId = "com.hackerapps.jargon"
         minSdk = 26
         targetSdk = 36
-        versionCode = 1
-        versionName = "1.0.0"
+        versionCode = 2
+        versionName = "1.0.1"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables { useSupportLibrary = true }
@@ -74,6 +74,15 @@ android {
 
     packaging {
         resources { excludes += "/META-INF/{AL2.0,LGPL2.1}" }
+    }
+
+    // AGP embeds a "Dependency metadata" block in the APK signing block by default,
+    // feeding Google Play Console's SDK Index -- pure Play Store plumbing, no benefit
+    // for an F-Droid-only app, and F-Droid's own scanner flags it as an extra signing
+    // block. Disable it.
+    dependenciesInfo {
+        includeInApk = false
+        includeInBundle = false
     }
 }
 
