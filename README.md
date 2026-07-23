@@ -68,6 +68,36 @@ CI runs this script twice on every push and fails if the two builds don't produc
 
 Produces the same unsigned, minified APK, but from your host toolchain rather than F-Droid's exact build environment — fine for a quick smoke test, not for verifying reproducibility. See [FDROID_PUBLISHING.md](FDROID_PUBLISHING.md) for the full submission process.
 
+### Signed (for the GitHub release)
+
+1. Generate a keystore (one-time):
+
+```bash
+keytool -genkeypair -v \
+  -keystore ~/jargon-release.jks \
+  -alias jargon \
+  -keyalg RSA -keysize 4096 \
+  -validity 10000
+```
+
+2. Add to `local.properties` (this file is gitignored — never commit it):
+
+```properties
+sdk.dir=/home/YOUR_USER/Android/Sdk
+storeFile=/home/YOUR_USER/jargon-release.jks
+storePassword=YOUR_STORE_PASS
+keyAlias=jargon
+keyPassword=YOUR_KEY_PASS
+```
+
+3. Build — `./gradlew assembleRelease` now signs automatically once `storeFile` is set:
+
+```bash
+./gradlew assembleRelease
+```
+
+APK: `app/build/outputs/apk/release/app-release.apk` (no `-unsigned` suffix once signed). This is the artifact attached to [GitHub releases](https://github.com/AnalogGhost/jargon/releases) — F-Droid's own copy is always signed independently with their key, this signature is only for the GitHub-hosted binary.
+
 ## Dictionary content
 
 Entries are parsed from the [Jargon File community edition](https://github.com/agiacalone/jargonfile) (a continuation of the file originally compiled by Eric S. Raymond and Guy L. Steele). The upstream source is pinned in `tools/jargon-source/` and parsed into `app/src/main/assets/jargon.json` by `tools/build_jargon_json.py` — nothing is fetched over the network at build time.

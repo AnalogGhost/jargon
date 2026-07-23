@@ -1,8 +1,16 @@
+import java.util.Properties
+
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
     alias(libs.plugins.kotlin.serialization)
+}
+
+// Load signing credentials from local.properties (never committed to git)
+val localProps = Properties().apply {
+    val f = rootProject.file("local.properties")
+    if (f.exists()) load(f.inputStream())
 }
 
 android {
@@ -20,6 +28,20 @@ android {
         vectorDrawables { useSupportLibrary = true }
     }
 
+    signingConfigs {
+        // Only configured when keystore properties exist in local.properties.
+        // F-Droid builds unsigned and applies their own signature.
+        create("release") {
+            val storeFile = localProps["storeFile"] as String?
+            if (storeFile != null) {
+                this.storeFile     = file(storeFile)
+                this.storePassword = localProps["storePassword"] as String
+                this.keyAlias      = localProps["keyAlias"] as String
+                this.keyPassword   = localProps["keyPassword"] as String
+            }
+        }
+    }
+
     buildTypes {
         release {
             isMinifyEnabled = true
@@ -28,6 +50,9 @@ android {
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
+            if (localProps["storeFile"] != null) {
+                signingConfig = signingConfigs.getByName("release")
+            }
         }
         debug {
             applicationIdSuffix = ".debug"
