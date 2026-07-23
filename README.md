@@ -70,9 +70,9 @@ Produces the same unsigned, minified APK, but from your host toolchain rather th
 
 ## Dictionary content
 
-Entries are parsed from the actively-maintained [Jargon File community edition](https://github.com/agiacalone/jargonfile) (a continuation of the file originally compiled by Eric S. Raymond and Guy L. Steele), licensed CC BY-SA 4.0. The upstream source is pinned in `tools/jargon-source/` and parsed into `app/src/main/assets/jargon.json` by `tools/build_jargon_json.py` — nothing is fetched over the network at build time. See `tools/jargon-source/SOURCE.md` for the pinned commit and how to refresh it.
+Entries are parsed from the [Jargon File community edition](https://github.com/agiacalone/jargonfile) (a continuation of the file originally compiled by Eric S. Raymond and Guy L. Steele). The upstream source is pinned in `tools/jargon-source/` and parsed into `app/src/main/assets/jargon.json` by `tools/build_jargon_json.py` — nothing is fetched over the network at build time.
 
-App source code is GPL-3.0; dictionary content stays CC BY-SA 4.0. Both are credited in-app on the About screen.
+The content itself has been essentially frozen since Raymond's last substantive revision (version 4.4.7, December 29, 2003); the community-edition repo mostly just re-hosts that snapshot, with only a single, non-content bugfix commit since 2021. Refreshing the pin is a rare, manual, occasional check rather than a routine sync — see `tools/jargon-source/SOURCE.md`.
 
 ## Project structure
 
@@ -100,11 +100,9 @@ tools/
 
 ## License
 
-Copyright (C) 2026 Contributors
+This repository carries two licenses, covering two different things:
 
-This program is free software: you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version.
+- **App source code** — GPL-3.0-or-later. Copyright (C) 2026 Matt Brown. Free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3, or (at your option) any later version. Full text: [LICENSE](LICENSE).
+- **Dictionary content** (`app/src/main/assets/jargon.json`, `tools/jargon-source/`) — CC BY-SA 4.0, from the Jargon File community edition. Full text: [`tools/jargon-source/UPSTREAM-LICENSE.txt`](tools/jargon-source/UPSTREAM-LICENSE.txt).
 
-See [LICENSE](LICENSE) for the full text.
+Both are credited in-app on the About screen.
