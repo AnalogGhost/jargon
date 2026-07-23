@@ -36,7 +36,7 @@ Fork `https://gitlab.com/fdroid/fdroiddata` on GitLab, then clone it locally (or
 
 ## 4. Create the app metadata file
 
-Add `metadata/com.hackerapps.jargon.yml` to your fdroiddata fork:
+Add `metadata/com.hackerapps.jargon.yml` to your fdroiddata fork. This is the version that actually passed CI (`fdroid build`, `fdroid lint`, `fdroid rewritemeta`) for the v1.0.0 submission:
 
 ```yaml
 Categories:
@@ -53,27 +53,33 @@ AutoName: Jargon
 
 RepoType: git
 Repo: https://github.com/AnalogGhost/jargon
+Binaries: https://github.com/AnalogGhost/jargon/releases/download/v%v/app-release.apk
 
 Builds:
   - versionName: 1.0.0
     versionCode: 1
-    commit: v1.0.0
+    commit: <full 40-char commit SHA the release tag points to>
+    subdir: app
     gradle:
       - yes
 
-CurrentVersion: 1.0.0
-CurrentVersionCode: 1
+AllowedAPKSigningKeys: <SHA-256 fingerprint of the release keystore cert, colons stripped, lowercase>
 
 AutoUpdateMode: Version
 UpdateCheckMode: Tags
+CurrentVersion: 1.0.0
+CurrentVersionCode: 1
 ```
 
-Notes, learned the hard way from c2k's actual submission history:
+Notes, learned the hard way from real CI failures on this exact submission (MR !43683) plus c2k's history:
 
+- `commit:` must be the **full commit hash**, not a tag or branch name — a maintainer flagged this directly in review. Get it with `git rev-parse v1.0.0` — but note that resolves an *annotated* tag to its own tag-object hash, not the commit; use `git log -1 v1.0.0 --format=%H` to get the actual commit SHA.
+- `subdir: app` is required since the Gradle module lives in `app/`, not repo root. Without it, `fdroid build` succeeds but then fails with "Failed to find any output apks" — fdroidserver looks for the output in the wrong directory.
 - `gradle: [yes]` is required even with no product flavors — omitting it or using `[release]` both get rejected/fixed during review.
 - `AutoUpdateMode: Version` — not `Version v%v`. The `v%v` form was c2k's original (wrong) submission; F-Droid's schema check corrected it.
 - No `Summary`/`Description` fields — current fdroiddata convention pulls these from the app repo's own `fastlane/metadata/android/en-US/{short_description,full_description}.txt` instead of duplicating them here.
-- `CurrentVersion`/`CurrentVersionCode` are required at submission time, not something added later — c2k's first submission was missing them and needed a follow-up fix commit.
+- `CurrentVersion`/`CurrentVersionCode` go **after** `AutoUpdateMode`/`UpdateCheckMode`, not before — `fdroid rewritemeta` enforces exact field order and fails CI otherwise.
+- `Binaries:`/`AllowedAPKSigningKeys` are optional but enable F-Droid's Reproducible Builds verification (their build must byte-match this URL's asset). Only add them once a real signed GitHub release exists — get the fingerprint with `keytool -list -v -keystore ~/jargon-release.jks -storepass "$PASS"`, take the `SHA256:` line, strip colons, lowercase. If F-Droid's build doesn't byte-match later, the fix historically has been a `postbuild` zipalign step using `reproducible-apk-tools` (see `com.hackerapps.c2k.yml`'s history) — don't add that preemptively, only if CI actually flags a mismatch.
 
 ---
 
@@ -99,7 +105,9 @@ git commit -m "Add com.hackerapps.jargon"
 git push -o merge_request.create -o merge_request.target=master origin add-com.hackerapps.jargon
 ```
 
-The push option opens the MR directly against `fdroid/fdroiddata` (GitLab's fork relationship handles the target project automatically). Their bot runs a build check automatically. A maintainer will review — typically 1–4 weeks.
+The push option opens the MR directly against `fdroid/fdroiddata` (GitLab's fork relationship handles the target project automatically), but it does **not** apply the repo's MR template — a maintainer flagged this on !43683. Immediately after creating it: edit the MR, use the "Choose a template" dropdown to select **App inclusion**, delete the instructional header (down through "Please remove above lines!"), and fill in the checklist honestly rather than leaving it default-unchecked. Also rename the title to `New app: <AppName>` format per the template's own instruction — the push-option title doesn't follow that format automatically.
+
+Their bot runs a build check automatically (`fdroid build`, `fdroid lint`, `fdroid rewritemeta`, `schema validation`). Check the pipeline status before assuming it's fine — a merge request can sit "open" while its pipeline is actually failing. A maintainer will review after CI is green — typically 1–4 weeks.
 
 ---
 
