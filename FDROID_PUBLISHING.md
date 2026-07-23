@@ -30,7 +30,7 @@ F-Droid reads from `fastlane/metadata/android/en-US/`. Verify these are accurate
 
 ## 3. Fork fdroiddata
 
-Fork `https://gitlab.com/fdroid/fdroiddata` on GitLab, then clone it locally (or reuse the existing `~/Projects/fdroiddata` clone).
+Fork `https://gitlab.com/fdroid/fdroiddata` on GitLab, then clone it locally (or reuse the existing `~/Projects/fdroiddata` clone, which already has `origin` pointing at the fork). Sync your fork's `master` to upstream before branching — it drifts fast, this repo gets thousands of commits.
 
 ---
 
@@ -50,18 +50,6 @@ SourceCode: https://github.com/AnalogGhost/jargon
 IssueTracker: https://github.com/AnalogGhost/jargon/issues
 
 AutoName: Jargon
-Summary: Offline reader for the Jargon File, the original hacker culture dictionary
-Description: |-
-  Fully offline reader for the Jargon File — the hacker culture dictionary
-  that gave the word "hacker" its original meaning. Over 2,300 entries,
-  browse or search, tap cross-references between entries, favorite the
-  ones you like, or hit random for a surprise.
-
-  No accounts, no ads, no analytics, no network access of any kind —
-  the dictionary ships inside the app.
-
-  Dictionary content is CC BY-SA 4.0 from the Jargon File community
-  edition. App source is GPL-3.0.
 
 RepoType: git
 Repo: https://github.com/AnalogGhost/jargon
@@ -70,12 +58,22 @@ Builds:
   - versionName: 1.0.0
     versionCode: 1
     commit: v1.0.0
+    gradle:
+      - yes
 
-AutoUpdateMode: Version v%v
+CurrentVersion: 1.0.0
+CurrentVersionCode: 1
+
+AutoUpdateMode: Version
 UpdateCheckMode: Tags
 ```
 
-Note: unlike c2k, this app has no `foss`/`play` product flavors — it only targets F-Droid for now, so the `Builds` entry has no `gradle:` key (builds the single default variant).
+Notes, learned the hard way from c2k's actual submission history:
+
+- `gradle: [yes]` is required even with no product flavors — omitting it or using `[release]` both get rejected/fixed during review.
+- `AutoUpdateMode: Version` — not `Version v%v`. The `v%v` form was c2k's original (wrong) submission; F-Droid's schema check corrected it.
+- No `Summary`/`Description` fields — current fdroiddata convention pulls these from the app repo's own `fastlane/metadata/android/en-US/{short_description,full_description}.txt` instead of duplicating them here.
+- `CurrentVersion`/`CurrentVersionCode` are required at submission time, not something added later — c2k's first submission was missing them and needed a follow-up fix commit.
 
 ---
 
@@ -92,8 +90,16 @@ fdroid readmeta
 
 ## 6. Submit the merge request
 
-Push your branch to your fdroiddata fork and open an MR against `fdroid/fdroiddata` on GitLab.
-Their bot runs a build check automatically. A maintainer will review — typically 1–4 weeks.
+```bash
+cd ~/Projects/fdroiddata
+git checkout -b add-com.hackerapps.jargon master
+# add metadata/com.hackerapps.jargon.yml
+git add metadata/com.hackerapps.jargon.yml
+git commit -m "Add com.hackerapps.jargon"
+git push -o merge_request.create -o merge_request.target=master origin add-com.hackerapps.jargon
+```
+
+The push option opens the MR directly against `fdroid/fdroiddata` (GitLab's fork relationship handles the target project automatically). Their bot runs a build check automatically. A maintainer will review — typically 1–4 weeks.
 
 ---
 
