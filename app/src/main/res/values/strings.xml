@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Jargon</string>
+
+    <string name="entry_list_title">Jargon</string>
+    <string name="entry_count">%1$d entries</string>
+</resources>

@@ -1,0 +1,20 @@
+Jargon is a fully offline reader for the Jargon File — the hacker culture
+dictionary that gave the word "hacker" its original meaning, decades before
+it came to mean "cracker." Compiled by Eric S. Raymond and Guy L. Steele and
+continued today as a community project, it's the closest thing hacking has
+to an etymology.
+
+Over 2,300 entries, all bundled in the app:
+
+* Browse alphabetically with a fast-scroll index
+* Instant search across terms and definitions
+* Tap any cross-referenced term to jump straight to it
+* Favorite entries for quick access later
+* "Surprise me" with a random entry
+
+Zero permissions. Zero network access, ever — the dictionary ships inside
+the app, favorites stay on your device, nothing is ever sent anywhere.
+No accounts, no ads, no analytics.
+
+Dictionary content is CC BY-SA 4.0 from the Jargon File community edition
+(github.com/agiacalone/jargonfile). App source is GPL-3.0.

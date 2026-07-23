@@ -1,0 +1,30 @@
+# Build outputs
+/build/
+app/build/
+/captures/
+
+# Gradle caches — never commit these
+.gradle/
+
+# Android Studio / IntelliJ
+*.iml
+.idea/
+*.DS_Store
+
+# Local machine config — contains SDK path and signing secrets
+local.properties
+local.properties~
+
+# Signing keystores — never commit
+*.keystore
+*.jks
+release/
+
+# fastlane run artifacts — not the config files themselves
+fastlane/report.xml
+fastlane/metadata/android/screenshots.html
+vendor/bundle/
+
+# Local machine paths to secrets — never commit
+fastlane/.env.default
+fastlane/.env
