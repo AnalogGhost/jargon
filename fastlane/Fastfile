@@ -1,0 +1,39 @@
+default_platform(:android)
+
+platform :android do
+  desc "Build the Play release AAB and upload it plus store listing metadata to Google Play"
+  desc "Defaults to a dry run (validate_only) against the internal track — pass track:production"
+  desc "and validate_only:false to actually publish."
+  lane :playstore do |options|
+    gradle(task: "bundlePlayRelease")
+
+    upload_to_play_store(
+      track: options[:track] || "internal",
+      aab: Dir["app/build/outputs/bundle/playRelease/*.aab"].first,
+      metadata_path: "./fastlane/metadata/android",
+      skip_upload_apk: true,
+      # Images/screenshots rarely change between releases, and uploading them for
+      # every locale multiplies flaky Play API calls (500s, dropped connections).
+      # Pass skip_images:false / skip_screenshots:false when they actually changed.
+      skip_upload_images: options[:skip_images].nil? ? true : options[:skip_images],
+      skip_upload_screenshots: options[:skip_screenshots].nil? ? true : options[:skip_screenshots],
+      validate_only: options[:validate_only].nil? ? true : options[:validate_only]
+    )
+  end
+
+  desc "Upload only the store-listing text (titles/descriptions) to Google Play — no build,"
+  desc "no AAB, no images, no changelogs. For listing-copy fixes between releases."
+  desc "Defaults to a dry run; pass validate_only:false to publish."
+  lane :metadata do |options|
+    upload_to_play_store(
+      track: options[:track] || "production",
+      metadata_path: "./fastlane/metadata/android",
+      skip_upload_aab: true,
+      skip_upload_apk: true,
+      skip_upload_images: true,
+      skip_upload_screenshots: true,
+      skip_upload_changelogs: true,
+      validate_only: options[:validate_only].nil? ? true : options[:validate_only]
+    )
+  end
+end

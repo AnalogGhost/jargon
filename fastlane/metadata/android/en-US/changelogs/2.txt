@@ -1,3 +1,2 @@
-Remove the Play Console dependency-metadata block from release builds
-(pure Play Store plumbing, flagged by F-Droid's scanner as unnecessary
-on a F-Droid-only app).
+Remove an unused APK signing-block extra from release builds.
+Internal change, no user-facing effect.
