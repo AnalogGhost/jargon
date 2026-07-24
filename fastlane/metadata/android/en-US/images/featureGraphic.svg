@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="1024" height="500" viewBox="0 0 1024 500">
+
+  <!-- Background -->
+  <rect width="1024" height="500" fill="#1B5E20"/>
+
+  <!-- Terminal prompt glyph — scaled up from the 108dp launcher icon -->
+  <g transform="translate(90, 77) scale(3.2)" stroke-linecap="round" stroke-linejoin="round">
+    <path fill="none" stroke="white" stroke-width="8"
+          d="M38,32 L60,54 L38,76"/>
+    <path fill="none" stroke="white" stroke-width="8"
+          d="M68,76 L86,76"/>
+  </g>
+
+  <!-- Wordmark -->
+  <text x="740" y="200"
+        font-family="sans-serif" font-weight="900" font-size="115"
+        fill="white" text-anchor="middle" dominant-baseline="middle">Jargon</text>
+
+  <!-- Subtitle -->
+  <text x="740" y="300"
+        font-family="sans-serif" font-weight="400" font-size="30"
+        fill="white" fill-opacity="0.9" text-anchor="middle">Hacker Culture Dictionary</text>
+
+  <!-- Tagline -->
+  <text x="740" y="355"
+        font-family="sans-serif" font-size="24"
+        fill="white" fill-opacity="0.65" text-anchor="middle">Offline · Open Source · No Tracking</text>
+
+</svg>
