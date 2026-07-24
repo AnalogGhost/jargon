@@ -20,7 +20,7 @@ docker run --rm \
   -e HOST_GID="$(id -g)" \
   -w /workspace \
   registry.gitlab.com/fdroid/fdroidserver:buildserver-trixie \
-  bash -c "apt-get install -y -q openjdk-21-jdk-headless 2>/dev/null && ./gradlew --no-daemon -Dorg.gradle.java.home=/usr/lib/jvm/java-21-openjdk-amd64 --no-build-cache clean :app:assembleRelease; status=\$?; chown -R \$HOST_UID:\$HOST_GID /workspace /root/.gradle; exit \$status"
+  bash -c "apt-get install -y -q openjdk-21-jdk-headless 2>/dev/null && ./gradlew --no-daemon -Dorg.gradle.java.home=/usr/lib/jvm/java-21-openjdk-amd64 --no-build-cache clean :app:assembleFossRelease; status=\$?; chown -R \$HOST_UID:\$HOST_GID /workspace /root/.gradle; exit \$status"
 
 # Restore (or remove) local.properties
 if [ "$HAD_LOCAL_PROPERTIES" -eq 1 ]; then
@@ -28,4 +28,4 @@ if [ "$HAD_LOCAL_PROPERTIES" -eq 1 ]; then
 else
   rm -f "$PROJECT_DIR/local.properties"
 fi
-ls -la "$PROJECT_DIR/app/build/outputs/apk/release/"
+ls -la "$PROJECT_DIR/app/build/outputs/apk/foss/release/"

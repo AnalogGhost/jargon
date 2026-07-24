@@ -54,7 +54,7 @@ Use the Docker build script to produce an unsigned APK in the same environment F
 bash docker-build.sh
 ```
 
-APK: `app/build/outputs/apk/release/app-release-unsigned.apk`
+APK: `app/build/outputs/apk/foss/release/app-foss-release-unsigned.apk`
 
 F-Droid builds from source and applies its own signature. Build from the tagged commit before making any further commits.
 
@@ -63,7 +63,7 @@ CI runs this script twice on every push and fails if the two builds don't produc
 ### Plain build (for local testing, not submission)
 
 ```bash
-./gradlew assembleRelease
+./gradlew assembleFossRelease
 ```
 
 Produces the same unsigned, minified APK, but from your host toolchain rather than F-Droid's exact build environment — fine for a quick smoke test, not for verifying reproducibility. See [FDROID_PUBLISHING.md](FDROID_PUBLISHING.md) for the full submission process.
@@ -90,13 +90,21 @@ keyAlias=jargon
 keyPassword=YOUR_KEY_PASS
 ```
 
-3. Build — `./gradlew assembleRelease` now signs automatically once `storeFile` is set:
+3. Build — `./gradlew assembleFossRelease` now signs automatically once `storeFile` is set:
 
 ```bash
-./gradlew assembleRelease
+./gradlew assembleFossRelease
 ```
 
-APK: `app/build/outputs/apk/release/app-release.apk` (no `-unsigned` suffix once signed). This is the artifact attached to [GitHub releases](https://github.com/AnalogGhost/jargon/releases) — F-Droid's own copy is always signed independently with their key, this signature is only for the GitHub-hosted binary.
+APK: `app/build/outputs/apk/foss/release/app-foss-release.apk` (no `-unsigned` suffix once signed). Rename to `app-release.apk` when attaching to a [GitHub release](https://github.com/AnalogGhost/jargon/releases) — that's the filename `Binaries:` in the F-Droid metadata expects. F-Droid's own copy is always signed independently with their key, this signature is only for the GitHub-hosted binary.
+
+### Play Store build
+
+```bash
+./gradlew bundlePlayRelease
+```
+
+AAB: `app/build/outputs/bundle/playRelease/app-play-release.aab`, signed the same way once `storeFile` is set in `local.properties`. Unlike the `foss` flavor, `play` keeps AGP's SDK Index dependency metadata and ART baseline profiles — both are useful on Play, and only the F-Droid flavor needs to strip them for reproducibility/scanner reasons.
 
 ## Dictionary content
 

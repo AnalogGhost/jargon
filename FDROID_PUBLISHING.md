@@ -75,7 +75,7 @@ Notes, learned the hard way from real CI failures on this exact submission (MR !
 
 - `commit:` must be the **full commit hash**, not a tag or branch name — a maintainer flagged this directly in review. Get it with `git rev-parse v1.0.0` — but note that resolves an *annotated* tag to its own tag-object hash, not the commit; use `git log -1 v1.0.0 --format=%H` to get the actual commit SHA.
 - `subdir: app` is required since the Gradle module lives in `app/`, not repo root. Without it, `fdroid build` succeeds but then fails with "Failed to find any output apks" — fdroidserver looks for the output in the wrong directory.
-- `gradle: [yes]` is required even with no product flavors — omitting it or using `[release]` both get rejected/fixed during review.
+- `gradle: [yes]` is required even with no product flavors — omitting it or using `[release]` both get rejected/fixed during review. **This was true for the v1.0.0 submission above, but no longer applies going forward**: the app since gained `foss`/`play` product flavors for the Play Store release, so any *new* Builds entry (versionCode 2+) must use `gradle: [foss]` instead — F-Droid must only ever build the `foss` flavor, never `play`.
 - `AutoUpdateMode: Version` — not `Version v%v`. The `v%v` form was c2k's original (wrong) submission; F-Droid's schema check corrected it.
 - No `Summary`/`Description` fields — current fdroiddata convention pulls these from the app repo's own `fastlane/metadata/android/en-US/{short_description,full_description}.txt` instead of duplicating them here.
 - `CurrentVersion`/`CurrentVersionCode` go **after** `AutoUpdateMode`/`UpdateCheckMode`, not before — `fdroid rewritemeta` enforces exact field order and fails CI otherwise.
@@ -137,5 +137,5 @@ Before tagging a release:
 - [ ] Update `versionName` (e.g. `1.1.0`)
 - [ ] Add `fastlane/metadata/android/en-US/changelogs/<versionCode>.txt`
 - [ ] Run `./gradlew test` — all tests pass
-- [ ] Run `./gradlew assembleRelease` — release APK builds clean
+- [ ] Run `./gradlew assembleFossRelease` — release APK builds clean
 - [ ] Commit, tag, push

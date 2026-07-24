@@ -42,6 +42,17 @@ android {
         }
     }
 
+    flavorDimensions += "store"
+
+    productFlavors {
+        create("foss") {
+            dimension = "store"
+        }
+        create("play") {
+            dimension = "store"
+        }
+    }
+
     buildTypes {
         release {
             isMinifyEnabled = true
@@ -75,14 +86,16 @@ android {
     packaging {
         resources { excludes += "/META-INF/{AL2.0,LGPL2.1}" }
     }
+}
 
-    // AGP embeds a "Dependency metadata" block in the APK signing block by default,
-    // feeding Google Play Console's SDK Index -- pure Play Store plumbing, no benefit
-    // for an F-Droid-only app, and F-Droid's own scanner flags it as an extra signing
-    // block. Disable it.
-    dependenciesInfo {
-        includeInApk = false
-        includeInBundle = false
+// AGP embeds a "Dependency metadata" block in the APK signing block by default, feeding
+// Google Play Console's SDK Index. F-Droid's own scanner flags it as an extra signing
+// block, so disable it for the foss flavor only -- the play flavor keeps it since that's
+// exactly the Play Store plumbing it's for.
+androidComponents {
+    beforeVariants(selector().withFlavor("store" to "foss")) { variantBuilder ->
+        variantBuilder.dependenciesInfo.includeInApk = false
+        variantBuilder.dependenciesInfo.includeInBundle = false
     }
 }
 
@@ -91,9 +104,10 @@ android {
 // serializing some profile formats, so byte order can differ build-to-build even with
 // otherwise identical output. Disabling it is the documented workaround —
 // see https://gist.github.com/obfusk/61046e09cee352ae6dd109911534b12e
-// This app is F-Droid-only, so always disable it (no Play flavor needs the profile).
+// Only F-Droid (foss flavor) needs reproducibility; Play builds keep the profile for
+// better startup performance.
 tasks.configureEach {
-    if (name.contains("ArtProfile")) {
+    if (name.contains("ArtProfile") && !name.contains("Play")) {
         enabled = false
     }
 }
