@@ -1,0 +1,3 @@
+Fix bright splash screen on cold launch in dark environments.
+Add foss/play build flavors ahead of Play Store distribution; F-Droid
+builds only ever use the foss flavor.
