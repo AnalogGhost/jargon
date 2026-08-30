@@ -1,0 +1,17 @@
+# Captions burned into the framed Play Store screenshots by
+# `./gradlew :tools:screenshot-composer:run`. Keyed by screenshot file name (without .png),
+# then by locale. en-US only for now — add a locale row here when a translated
+# fastlane/metadata/android/<locale> set is added. Re-run the composer and `fastlane images`
+# after any edit.
+01_browse:
+  en-US: "Over 2,300 entries, fully offline"
+02_search:
+  en-US: "Instant search across every definition"
+03_detail:
+  en-US: "The real etymology of hacker culture"
+04_crossref:
+  en-US: "Tap any cross-reference to jump"
+05_favorites:
+  en-US: "Keep your favorites one tap away"
+06_about:
+  en-US: "No ads. No tracking. No network."

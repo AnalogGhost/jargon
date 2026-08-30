@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 108 108">
+
+  <!-- Background — matches ic_launcher_background.xml -->
+  <rect width="108" height="108" fill="#1B5E20"/>
+
+  <!-- Terminal prompt chevron — matches ic_launcher_foreground.xml -->
+  <path fill="none" stroke="#FFFFFF" stroke-width="8"
+        stroke-linecap="round" stroke-linejoin="round"
+        d="M38,32 L60,54 L38,76"/>
+
+  <!-- Prompt cursor underscore -->
+  <path fill="none" stroke="#FFFFFF" stroke-width="8"
+        stroke-linecap="round"
+        d="M68,76 L86,76"/>
+
+</svg>

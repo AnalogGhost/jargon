@@ -22,3 +22,4 @@ dependencyResolutionManagement {
 
 rootProject.name = "Jargon"
 include(":app")
+include(":tools:screenshot-composer")
