@@ -66,4 +66,57 @@ class EntryFiltersTest {
         assertNull(findByTermText(all, "hack"))
         assertNull(findByTermText(all, "hackers"))
     }
+
+    @Test
+    fun `findByTermText does not trim surrounding whitespace`() {
+        assertNull(findByTermText(all, " hacker"))
+        assertNull(findByTermText(all, "hacker "))
+    }
+
+    @Test
+    fun `findByTermText returns the first entry when two share a term`() {
+        val first = entry("h1", "hacker", "first sense")
+        val second = entry("h2", "hacker", "second sense")
+        assertEquals(first, findByTermText(listOf(first, second), "hacker"))
+    }
+
+    @Test
+    fun `filterByQuery ignores surrounding whitespace in the query`() {
+        assertEquals(filterByQuery(all, "hacker"), filterByQuery(all, "  hacker  "))
+        assertEquals(listOf(hacker), filterByQuery(all, "  hacker  ").take(1))
+    }
+
+    @Test
+    fun `filterByQuery matches a substring of a term`() {
+        assertEquals(listOf(kludge), filterByQuery(all, "ludge"))
+    }
+
+    @Test
+    fun `filterByQuery preserves input order within the term-match group`() {
+        val hackA = entry("a", "hack-a", "x")
+        val hackB = entry("b", "hack-b", "y")
+        val hackC = entry("c", "hack-c", "z")
+        val entries = listOf(hackC, hackA, hackB)
+        assertEquals(entries, filterByQuery(entries, "hack"))
+    }
+
+    @Test
+    fun `filterByQuery returns every term match before any definition-only match`() {
+        val alpha = entry("alpha", "alpha", "this one mentions zeta in its definition")
+        val zeta = entry("zeta", "zeta", "no self reference")
+        val zetaTwo = entry("zeta-two", "zeta-two", "also nothing")
+        val entries = listOf(alpha, zeta, zetaTwo)
+        assertEquals(listOf(zeta, zetaTwo, alpha), filterByQuery(entries, "zeta"))
+    }
+
+    @Test
+    fun `filterByQuery on an empty entry list returns an empty list`() {
+        assertEquals(emptyList<DictionaryEntry>(), filterByQuery(emptyList(), "hacker"))
+    }
+
+    @Test
+    fun `filterFavorites preserves entry order`() {
+        val result = filterFavorites(all, favoriteIds = setOf(kludge.id, hacker.id), showFavoritesOnly = true)
+        assertEquals(listOf(hacker, kludge), result)
+    }
 }
