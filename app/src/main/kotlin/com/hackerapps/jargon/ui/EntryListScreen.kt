@@ -12,8 +12,11 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListState
+import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.foundation.text.KeyboardActions
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Info
 import androidx.compose.material.icons.filled.Shuffle
@@ -29,14 +32,22 @@ import androidx.compose.material3.ListItem
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SuggestionChip
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.onFocusChanged
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
+import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
 import com.hackerapps.jargon.data.DictionaryEntry
 import kotlinx.coroutines.launch
@@ -55,8 +66,11 @@ fun EntryListScreen(
     val searchQuery by viewModel.searchQuery.collectAsState()
     val showFavoritesOnly by viewModel.showFavoritesOnly.collectAsState()
     val favoriteIds by viewModel.favoriteIds.collectAsState()
+    val recentSearches by viewModel.recentSearches.collectAsState()
     val loadError by viewModel.loadError.collectAsState()
     val listState = rememberLazyListState()
+    val keyboardController = LocalSoftwareKeyboardController.current
+    var searchFieldFocused by remember { mutableStateOf(false) }
 
     Scaffold(
         topBar = {
@@ -109,10 +123,28 @@ fun EntryListScreen(
                         onValueChange = viewModel::onSearchQueryChange,
                         label = { Text("Search") },
                         singleLine = true,
+                        keyboardOptions = KeyboardOptions(imeAction = ImeAction.Search),
+                        keyboardActions = KeyboardActions(onSearch = {
+                            viewModel.commitSearch()
+                            keyboardController?.hide()
+                        }),
                         modifier = Modifier
                             .fillMaxWidth()
                             .padding(horizontal = 16.dp, vertical = 8.dp)
+                            .onFocusChanged { searchFieldFocused = it.isFocused }
                     )
+
+                    if (searchFieldFocused && searchQuery.isBlank() && recentSearches.isNotEmpty()) {
+                        RecentSearches(
+                            searches = recentSearches,
+                            onSelect = {
+                                viewModel.onRecentSearchSelected(it)
+                                keyboardController?.hide()
+                            },
+                            onClear = viewModel::clearSearchHistory
+                        )
+                    }
+
                     if (visibleEntries.isEmpty()) {
                         Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
                             Text(
@@ -143,6 +175,32 @@ fun EntryListScreen(
                         }
                     }
                 }
+            }
+        }
+    }
+}
+
+@Composable
+private fun RecentSearches(
+    searches: List<String>,
+    onSelect: (String) -> Unit,
+    onClear: () -> Unit
+) {
+    Column(Modifier.fillMaxWidth().padding(horizontal = 16.dp)) {
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Text("Recent", style = MaterialTheme.typography.labelMedium)
+            TextButton(onClick = onClear) { Text("Clear") }
+        }
+        LazyRow(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+            items(searches, key = { it }) { query ->
+                SuggestionChip(
+                    onClick = { onSelect(query) },
+                    label = { Text(query, maxLines = 1) }
+                )
             }
         }
     }
