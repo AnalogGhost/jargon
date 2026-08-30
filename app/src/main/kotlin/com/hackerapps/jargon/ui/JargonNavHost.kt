@@ -1,6 +1,7 @@
 package com.hackerapps.jargon.ui
 
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -9,15 +10,32 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
+import kotlinx.coroutines.flow.first
 
 private const val ROUTE_LIST = "list"
 private const val ROUTE_DETAIL = "detail/{entryId}"
 private const val ROUTE_ABOUT = "about"
 
 @Composable
-fun JargonNavHost() {
+fun JargonNavHost(
+    launchRandomEntry: Boolean = false,
+    onRandomEntryLaunched: () -> Unit = {}
+) {
     val navController = rememberNavController()
     val viewModel: JargonViewModel = viewModel()
+
+    // Triggered by the "Random entry" launcher shortcut. The dictionary loads asynchronously, so
+    // wait for the first non-empty entry list before picking one and navigating.
+    LaunchedEffect(launchRandomEntry) {
+        if (!launchRandomEntry) return@LaunchedEffect
+        viewModel.entries.first { it.isNotEmpty() }
+        viewModel.randomEntry()?.let { target ->
+            navController.navigate("detail/${target.id}") {
+                popUpTo(ROUTE_LIST)
+            }
+        }
+        onRandomEntryLaunched()
+    }
 
     val onTermClick: (String) -> Unit = { term ->
         val target = viewModel.findByTermText(term)

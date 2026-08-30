@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shortcuts xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Implicit intent (no target component): the debug build type adds a .debug applicationId
+         suffix, so it is resolved against this app's own manifest via the matching
+         <intent-filter> on MainActivity. -->
+    <shortcut
+        android:shortcutId="random_entry"
+        android:enabled="true"
+        android:icon="@drawable/ic_shortcut_random"
+        android:shortcutShortLabel="@string/shortcut_random_short"
+        android:shortcutLongLabel="@string/shortcut_random_long">
+        <intent android:action="com.hackerapps.jargon.action.RANDOM_ENTRY" />
+    </shortcut>
+</shortcuts>

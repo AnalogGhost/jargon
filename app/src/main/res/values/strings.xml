@@ -4,4 +4,7 @@
 
     <string name="entry_list_title">Jargon</string>
     <string name="entry_count">%1$d entries</string>
+
+    <string name="shortcut_random_short">Random</string>
+    <string name="shortcut_random_long">Random entry</string>
 </resources>
