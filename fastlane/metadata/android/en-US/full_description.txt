@@ -7,10 +7,11 @@ to an etymology.
 Over 2,300 entries, all bundled in the app:
 
 * Browse alphabetically with a fast-scroll index
-* Instant search across terms and definitions
+* Instant search across terms and definitions, with your recent searches remembered
 * Tap any cross-referenced term to jump straight to it
+* Share or copy a definition to paste anywhere
 * Favorite entries for quick access later
-* "Surprise me" with a random entry
+* "Surprise me" with a random entry — or long-press the app icon to jump straight to one
 
 Zero permissions. Zero network access, ever — the dictionary ships inside
 the app, favorites stay on your device, nothing is ever sent anywhere.

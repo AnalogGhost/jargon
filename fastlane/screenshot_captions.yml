@@ -8,10 +8,12 @@
 02_search:
   en-US: "Instant search across every definition"
 03_detail:
-  en-US: "The real etymology of hacker culture"
+  en-US: "Share or copy any definition"
 04_crossref:
   en-US: "Tap any cross-reference to jump"
 05_favorites:
   en-US: "Keep your favorites one tap away"
 06_about:
   en-US: "No ads. No tracking. No network."
+07_recent:
+  en-US: "Jump back to a recent search"
