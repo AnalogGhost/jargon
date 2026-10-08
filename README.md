@@ -136,6 +136,10 @@ tools/
 └── jargon-source/                 # Pinned upstream source + its license
 ```
 
+## Support
+
+Jargon is free, with no ads or tracking. If it's useful to you, you can [sponsor its development on GitHub](https://github.com/sponsors/AnalogGhost).
+
 ## License
 
 This repository carries two licenses, covering two different things:
