@@ -21,13 +21,13 @@ For _fastlane_ installation instructions, see [Installing _fastlane_](https://do
 [bundle exec] fastlane android screenshots
 ```
 
-Composite the framed/captioned Play Store marketing screenshots. Reads the plain raw
+Compose the captioned Play Store marketing screenshots. Reads the plain raw captures
 
-captures from fastlane/metadata/android/<locale>/images/phoneScreenshots (the set
+from fastlane/metadata/android/<locale>/images/phoneScreenshots (the set F-Droid uses,
 
-F-Droid uses, added by hand) and writes the green-phosphor framed set to
+added by hand) and renders the slides with headless Chrome into fastlane/metadata/android-play.
 
-fastlane/metadata/android-play. Edit fastlane/screenshot_captions.yml for the caption text.
+Edit tools/store-screenshots/captions.json for the slide copy and screen pairings.
 
 ### android images
 

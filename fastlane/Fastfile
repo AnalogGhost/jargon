@@ -1,12 +1,12 @@
 default_platform(:android)
 
 platform :android do
-  desc "Composite the framed/captioned Play Store marketing screenshots. Reads the plain raw"
-  desc "captures from fastlane/metadata/android/<locale>/images/phoneScreenshots (the set"
-  desc "F-Droid uses, added by hand) and writes the green-phosphor framed set to"
-  desc "fastlane/metadata/android-play. Edit fastlane/screenshot_captions.yml for the caption text."
+  desc "Compose the captioned Play Store marketing screenshots. Reads the plain raw captures"
+  desc "from fastlane/metadata/android/<locale>/images/phoneScreenshots (the set F-Droid uses,"
+  desc "added by hand) and renders the slides with headless Chrome into fastlane/metadata/android-play."
+  desc "Edit tools/store-screenshots/captions.json for the slide copy and screen pairings."
   lane :screenshots do
-    gradle(task: ":tools:screenshot-composer:run")
+    sh("cd .. && python3 tools/store-screenshots/build.py")
   end
 
   desc "Upload only store screenshots/images to Google Play — no build, no AAB, no listing"

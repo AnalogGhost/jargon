@@ -1,0 +1,21 @@
+{
+  "_comment": "Play Store slide copy. Headline lines are separated by |, and {braces} mark the accent. en-US only for now; add a locale when a translated fastlane/metadata/android/<locale> set is added.",
+  "slides": [
+    {"name": "01_dictionary", "main": "01_browse", "back": "03_detail"},
+    {"name": "02_search", "main": "02_search", "back": "07_recent"},
+    {"name": "03_crossref", "main": "04_crossref", "back": "03_detail"},
+    {"name": "04_share", "main": "03_detail", "back": "02_search"},
+    {"name": "05_favorites", "main": "05_favorites", "back": "01_browse"},
+    {"name": "06_offline", "main": "06_about", "back": "01_browse"}
+  ],
+  "copy": {
+    "en-US": [
+      ["The hacker's|{dictionary.}", "Over 2,300 entries from the Jargon File, all on your phone."],
+      ["Find it|{instantly.}", "Search every term and definition, with recent searches remembered."],
+      ["Follow the|{rabbit hole.}", "Tap any cross-reference to jump straight to it."],
+      ["Copy it.|{Share it.}", "Send any definition anywhere, or paste it into a chat."],
+      ["Keep your|{favorites.}", "Star an entry and it's always one tap away."],
+      ["No network.|{Ever.}", "Zero permissions. No accounts, no ads, no analytics."]
+    ]
+  }
+}
