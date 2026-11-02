@@ -12,6 +12,8 @@ A fully offline Android reader for the Jargon File — the hacker culture dictio
 - Tap any cross-referenced term to jump straight to it
 - Favorite entries and filter down to just those
 - "Surprise me" with a random entry
+- A Word of the Day home screen widget
+- On tablets, foldables and landscape screens, the list stays beside the open entry
 - Zero permissions, zero network access — the dictionary ships inside the app; nothing ever leaves the device
 
 ## Building
@@ -120,16 +122,19 @@ app/src/main/kotlin/com/hackerapps/jargon/
 │   ├── DictionaryEntry.kt         # Entry model
 │   ├── DictionaryRepository.kt    # Loads jargon.json from assets
 │   ├── FavoritesRepository.kt     # DataStore-backed favorite ids
-│   └── EntryFilters.kt            # Search / favorites-filter / term lookup
+│   ├── EntryFilters.kt            # Search / favorites-filter / term lookup
+│   └── WordOfTheDay.kt            # Date-based daily pick, shared with the widget
 └── ui/
     ├── MainActivity.kt
-    ├── JargonNavHost.kt
+    ├── JargonNavHost.kt           # List-detail panes (one or two by screen width)
     ├── JargonViewModel.kt
     ├── EntryListScreen.kt         # Browse, search, alphabet scrubber
     ├── EntryDetailScreen.kt       # Definition, favorite toggle
     ├── LinkedText.kt              # Tappable cross-reference rendering
     ├── AboutScreen.kt
     └── theme/
+└── widget/
+    └── WordOfTheDayWidget.kt      # Home screen widget (RemoteViews)
 
 tools/
 ├── build_jargon_json.py           # Upstream DocBook XML -> jargon.json

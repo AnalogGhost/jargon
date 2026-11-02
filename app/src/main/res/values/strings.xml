@@ -7,4 +7,10 @@
 
     <string name="shortcut_random_short">Random</string>
     <string name="shortcut_random_long">Random entry</string>
+
+    <string name="widget_label">Word of the day</string>
+    <string name="widget_name">Word of the Day</string>
+    <string name="widget_description">A new entry from the Jargon File every day</string>
+    <string name="widget_preview_term">kludge</string>
+    <string name="widget_preview_definition">1. /kluhj/ n. Incorrect (though regrettably common) spelling of kluge (US). These two words have been confused in American usage since the early 1960s, and widely confounded in Great Britain since the end of World War II.</string>
 </resources>

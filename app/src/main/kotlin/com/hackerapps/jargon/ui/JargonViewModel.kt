@@ -7,9 +7,11 @@ import com.hackerapps.jargon.data.DictionaryEntry
 import com.hackerapps.jargon.data.DictionaryRepository
 import com.hackerapps.jargon.data.FavoritesRepository
 import com.hackerapps.jargon.data.SearchHistoryRepository
+import com.hackerapps.jargon.data.WordOfTheDay
 import com.hackerapps.jargon.data.filterByQuery
 import com.hackerapps.jargon.data.filterFavorites
 import com.hackerapps.jargon.data.findByTermText
+import java.time.LocalDate
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.Flow
@@ -117,4 +119,7 @@ class JargonViewModel(application: Application) : AndroidViewModel(application) 
     fun findByTermText(term: String): DictionaryEntry? = findByTermText(entries.value, term)
 
     fun randomEntry(): DictionaryEntry? = entries.value.randomOrNull()
+
+    /** Today's entry, the same one the widget shows (see [WordOfTheDay]). */
+    fun wordOfTheDay(): DictionaryEntry? = WordOfTheDay.entryFor(LocalDate.now(), entries.value)
 }

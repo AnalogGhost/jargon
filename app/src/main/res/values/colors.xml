@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Word of the Day widget; matches the app's light theme (ui/theme/Color.kt). -->
+    <color name="widget_background">#FFFFFFFF</color>
+    <color name="widget_text">#FF1A1A1A</color>
+    <color name="widget_secondary_text">#FF5F6368</color>
+    <color name="widget_accent">#FF1B5E20</color>
+</resources>

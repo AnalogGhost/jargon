@@ -29,6 +29,7 @@ import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.ListItem
+import androidx.compose.material3.ListItemDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
@@ -59,7 +60,9 @@ private val SCRUBBER_LETTERS = listOf('#') + ('A'..'Z').toList()
 fun EntryListScreen(
     viewModel: JargonViewModel,
     onEntryClick: (DictionaryEntry) -> Unit,
-    onAboutClick: () -> Unit
+    onAboutClick: () -> Unit,
+    // The entry open beside the list in two-pane mode, highlighted so the list shows where you are.
+    selectedId: String? = null
 ) {
     val entries by viewModel.entries.collectAsState()
     val visibleEntries by viewModel.visibleEntries.collectAsState()
@@ -165,6 +168,13 @@ fun EntryListScreen(
                                             if (entry.id in favoriteIds) {
                                                 Icon(Icons.Filled.Star, contentDescription = "Favorite")
                                             }
+                                        },
+                                        colors = if (entry.id == selectedId) {
+                                            ListItemDefaults.colors(
+                                                containerColor = MaterialTheme.colorScheme.secondaryContainer
+                                            )
+                                        } else {
+                                            ListItemDefaults.colors()
                                         },
                                         modifier = Modifier.clickable { onEntryClick(entry) }
                                     )

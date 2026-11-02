@@ -21,8 +21,8 @@ android {
         applicationId = "com.hackerapps.jargon"
         minSdk = 26
         targetSdk = 36
-        versionCode = 4
-        versionName = "1.1.0"
+        versionCode = 5
+        versionName = "1.2.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables { useSupportLibrary = true }
@@ -122,6 +122,8 @@ dependencies {
     implementation(libs.lifecycle.viewmodel.compose)
     implementation(libs.lifecycle.runtime.compose)
     implementation(libs.navigation.compose)
+    implementation(libs.adaptive.layout)
+    implementation(libs.adaptive.navigation)
     implementation(libs.kotlinx.serialization.json)
     implementation(libs.datastore.preferences)
 

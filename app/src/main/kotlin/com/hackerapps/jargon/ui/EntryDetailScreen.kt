@@ -35,7 +35,10 @@ fun EntryDetailScreen(
     isFavorite: Boolean,
     onToggleFavorite: () -> Unit,
     onTermClick: (String) -> Unit,
-    onBack: () -> Unit
+    // Null hides the back arrow: the word of the day shown beside the list has nowhere to go back to.
+    onBack: (() -> Unit)?,
+    // A small heading above the entry, e.g. "Word of the day".
+    label: String? = null
 ) {
     val context = LocalContext.current
     val clipboard = LocalClipboardManager.current
@@ -45,8 +48,10 @@ fun EntryDetailScreen(
             TopAppBar(
                 title = { Text(entry.term) },
                 navigationIcon = {
-                    IconButton(onClick = onBack) {
-                        Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back")
+                    if (onBack != null) {
+                        IconButton(onClick = onBack) {
+                            Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back")
+                        }
                     }
                 },
                 actions = {
@@ -85,6 +90,15 @@ fun EntryDetailScreen(
                 .padding(16.dp)
                 .verticalScroll(rememberScrollState())
         ) {
+            label?.let {
+                Text(
+                    it.uppercase(),
+                    style = MaterialTheme.typography.labelMedium,
+                    color = MaterialTheme.colorScheme.primary,
+                    modifier = Modifier.padding(bottom = 8.dp)
+                )
+            }
+
             val subtitle = listOfNotNull(entry.pronunciation, entry.partOfSpeech)
                 .joinToString("  ·  ")
             if (subtitle.isNotEmpty()) {

@@ -30,6 +30,23 @@
                 android:resource="@xml/shortcuts" />
         </activity>
 
+        <!-- Word of the Day widget. TIME_SET and TIMEZONE_CHANGED are among the broadcasts a
+             manifest receiver may still get on Android 8+, and need no permission. -->
+        <receiver
+            android:name=".widget.WordOfTheDayWidget"
+            android:exported="true"
+            android:label="@string/widget_name">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+                <action android:name="android.intent.action.TIME_SET" />
+                <action android:name="android.intent.action.TIMEZONE_CHANGED" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/word_of_the_day_widget_info" />
+        </receiver>
+
     </application>
 
 </manifest>
