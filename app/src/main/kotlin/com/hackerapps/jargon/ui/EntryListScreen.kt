@@ -3,6 +3,7 @@ package com.hackerapps.jargon.ui
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxHeight
@@ -47,6 +48,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.onFocusChanged
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
@@ -222,22 +224,38 @@ private fun AlphabetScrubber(
     listState: LazyListState
 ) {
     val scope = rememberCoroutineScope()
-    Column(
-        modifier = Modifier.fillMaxHeight().width(28.dp).padding(vertical = 4.dp),
-        verticalArrangement = Arrangement.SpaceEvenly,
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-        SCRUBBER_LETTERS.forEach { letter ->
-            Text(
-                text = letter.toString(),
-                style = MaterialTheme.typography.labelSmall,
-                modifier = Modifier
-                    .clickable {
-                        scope.launch { listState.scrollToItem(indexForLetter(entries, letter)) }
-                    }
-            )
+    val style = MaterialTheme.typography.labelSmall
+    val rowHeight = with(LocalDensity.current) { style.lineHeight.toDp() }
+    BoxWithConstraints(Modifier.fillMaxHeight().width(28.dp).padding(vertical = 4.dp)) {
+        // A landscape phone has room for about half the alphabet; show an evenly spaced subset
+        // rather than letting the column clip everything after the middle.
+        val letters = scrubberLetters((maxHeight / rowHeight).toInt())
+        Column(
+            modifier = Modifier.fillMaxSize(),
+            verticalArrangement = Arrangement.SpaceEvenly,
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            letters.forEach { letter ->
+                Text(
+                    text = letter.toString(),
+                    style = style,
+                    modifier = Modifier
+                        .clickable {
+                            scope.launch { listState.scrollToItem(indexForLetter(entries, letter)) }
+                        }
+                )
+            }
         }
     }
+}
+
+/** The scrubber letters to show when only [fit] rows fit: all of them, or an evenly spaced subset
+ *  that always keeps the first and last. */
+internal fun scrubberLetters(fit: Int): List<Char> {
+    if (fit >= SCRUBBER_LETTERS.size) return SCRUBBER_LETTERS
+    val count = fit.coerceAtLeast(2)
+    val last = SCRUBBER_LETTERS.lastIndex
+    return (0 until count).map { SCRUBBER_LETTERS[(it * last + (count - 1) / 2) / (count - 1)] }.distinct()
 }
 
 private fun indexForLetter(entries: List<DictionaryEntry>, letter: Char): Int {
