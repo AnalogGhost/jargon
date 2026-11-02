@@ -12,6 +12,8 @@ Over 2,300 entries, all bundled in the app:
 * Share or copy a definition to paste anywhere
 * Favorite entries for quick access later
 * "Surprise me" with a random entry — or long-press the app icon to jump straight to one
+* A Word of the Day widget for your home screen
+* On tablets and foldables, the list stays beside the entry you're reading
 
 Zero permissions. Zero network access, ever — the dictionary ships inside
 the app, favorites stay on your device, nothing is ever sent anywhere.

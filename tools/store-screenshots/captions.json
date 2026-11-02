@@ -6,7 +6,8 @@
     {"name": "03_crossref", "main": "04_crossref", "back": "03_detail"},
     {"name": "04_share", "main": "03_detail", "back": "02_search"},
     {"name": "05_favorites", "main": "05_favorites", "back": "01_browse"},
-    {"name": "06_offline", "main": "06_about", "back": "01_browse"}
+    {"name": "06_widget", "main": "08_widget", "back": "03_detail"},
+    {"name": "07_offline", "main": "06_about", "back": "01_browse"}
   ],
   "copy": {
     "en-US": [
@@ -15,6 +16,7 @@
       ["Follow the|{rabbit hole.}", "Tap any cross-reference to jump straight to it."],
       ["Copy it.|{Share it.}", "Send any definition anywhere, or paste it into a chat."],
       ["Keep your|{favorites.}", "Star an entry and it's always one tap away."],
+      ["A new word|{every day.}", "Put the Word of the Day widget on your home screen."],
       ["No network.|{Ever.}", "Zero permissions. No accounts, no ads, no analytics."]
     ]
   }

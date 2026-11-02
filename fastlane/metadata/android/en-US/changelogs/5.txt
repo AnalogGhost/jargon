@@ -1,0 +1,2 @@
+Add the new Word of the Day widget to your home screen. Tap it to read the full entry.
+On tablets, foldables and landscape screens, the list now stays beside the entry you're reading.
